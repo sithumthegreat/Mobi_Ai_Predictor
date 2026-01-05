@@ -34,32 +34,28 @@ with col2:
 # 4. Prediction Logic
 # 4. Prediction Logic
 if st.button("Predict Price Tier"):
-    # 1. Start with a list of 20 zeros (representing all columns in your image)
-    # The columns are: battery, blue, clock, dual, fc, four_g, int_mem, m_dep, 
-    # mobile_wt, n_cores, pc, px_h, px_w, ram, sc_h, sc_w, talk, three_g, touch, wifi
+    model = load_mobi_ai()
+ 
     data_input = [0.0] * 20 
 
-    # 2. Place your 5 sliders into their EXACT positions based on your image:
     data_input[0] = battery    # 'battery_power' is index 0
     data_input[2] = clock      # 'clock_speed' is index 2
     data_input[4] = fc         # 'fc' is index 4
     data_input[6] = int_mem    # 'int_memory' is index 6
     data_input[13] = ram       # 'ram' is index 13
 
-    # 3. Add some neutral "Middle" values for important columns so the AI isn't confused
+    
     data_input[8] = 150        # 'mobile_wt' (Average weight)
     data_input[9] = 4          # 'n_cores' (Average 4 cores)
     data_input[11] = 1000      # 'px_height' (Average screen height)
     data_input[12] = 1000      # 'px_width' (Average screen width)
 
-    # 4. Convert to NumPy and Scale
+
     input_data = np.array([data_input])
     scaled_input = scaler.transform(input_data)
-    
-    # 5. Predict
+
     predict = model.predict( scaled_input)[0][0]
-    
-    # Final Result
+
     if predict > 0.5:
         st.success(f"HIGH PRICE TIER")
     else:
